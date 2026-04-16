@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-itunes-app" content="app-id=6760481136" />
+  <title>Morning and Evening — Daily Spurgeon Devotional</title>
+  <meta name="description" content="Charles Spurgeon's Morning and Evening devotional app. 730 daily readings with high-quality audio narration, home screen widgets, and daily reminders. Free on iOS and Android." />
+  <link rel="icon" type="image/png" href="assets/images/icon.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #060e0c;
+      --bg2:       #0c1a15;
+      --bg3:       #0f211a;
+      --teal:      #00d4a0;
+      --teal-dim:  #00a87f;
+      --white:     #f0f5f3;
+      --muted:     #7aa89a;
+      --glow:      rgba(0, 212, 160, 0.18);
+      --radius:    1.5rem;
+      --shadow:    0 8px 40px rgba(0,0,0,0.6);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SITE HEADER (moved from footer line 1) ─────── */
+    .site-header {
+      width: 100%;
+      padding: 0.65rem 1.25rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: rgba(6, 14, 12, 0.92);
+      border-bottom: 1px solid rgba(0, 212, 160, 0.12);
+    }
+
+    .site-header a {
+      color: var(--teal-dim);
+      text-decoration: none;
+    }
+
+    .site-header a:hover { color: var(--teal); text-decoration: underline; }
+
+    /* ── HERO ─────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,160,0.12) 0%, transparent 70%),
+        var(--bg);
+    }
+
+    .hero-icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 26px;
+      box-shadow: 0 0 60px rgba(0,212,160,0.35), var(--shadow);
+      margin-bottom: 1.75rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero h1 span { color: var(--teal); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 0.75rem;
+    }
+
+    .hero-author {
+      font-size: 0.9rem;
+      color: var(--teal-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .badge-row a {
+      display: inline-block;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .badge-row a:hover { transform: translateY(-2px); opacity: 0.85; }
+
+    .badge-row img { height: 52px; border-radius: 10px; }
+
+    .badge-placeholder {
+      height: 52px;
+      padding: 0 1.4rem;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      cursor: default;
+    }
+
+    /* ── SECTION SHARED ───────────────────────────── */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: block;
+      text-align: center;
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-desc {
+      text-align: center;
+      color: var(--muted);
+      max-width: 540px;
+      margin: 0 auto 3rem;
+      font-size: 1rem;
+    }
+
+    /* ── DIVIDER ──────────────────────────────────── */
+    .divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,212,160,0.2), transparent);
+      margin: 0 2rem;
+    }
+
+    /* ── MOCKUP TOGGLE ────────────────────────────── */
+    .mockup-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .toggle-btn {
+      padding: 0.55rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,212,160,0.35);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-btn.active, .toggle-btn:hover {
+      background: var(--teal);
+      color: var(--bg);
+      border-color: var(--teal);
+      font-weight: 600;
+    }
+
+    /* ── SCREENSHOT GALLERY ───────────────────────── */
+    .gallery {
+      display: none;
+    }
+    .gallery.visible { display: block; }
+
+    .scroll-track {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 1rem 0.5rem 2rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--teal-dim) transparent;
+    }
+
+    .scroll-track::-webkit-scrollbar { height: 4px; }
+    .scroll-track::-webkit-scrollbar-track { background: transparent; }
+    .scroll-track::-webkit-scrollbar-thumb { background: var(--teal-dim); border-radius: 4px; }
+
+    /* Center the three app preview cards when they fit in the viewport */
+    #gallery-previews .scroll-track {
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* Centered screenshot grid (replaces horizontal scroll for main gallery) */
+    .screenshot-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1rem 1.25rem;
+      padding: 1rem 0 2rem;
+      max-width: 100%;
+    }
+
+    .screenshot-card {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow), 0 0 30px rgba(0,212,160,0.1);
+      transition: transform 0.3s;
+    }
+
+    .screenshot-card:hover { transform: translateY(-4px) scale(1.01); }
+
+    .screenshot-card img {
+      display: block;
+      height: 520px;
+      width: auto;
+      border-radius: var(--radius);
+    }
+
+
+    /* ── PREVIEW CARDS ────────────────────────────── */
+    /* App preview cards — same scroll pattern as screenshots */
+    .preview-scroll-card {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow), 0 0 30px rgba(0,212,160,0.1);
+      background: var(--bg2);
+      border: 1px solid rgba(0, 212, 160, 0.12);
+      transition: transform 0.3s, box-shadow 0.3s;
+      max-width: min(280px, 85vw);
+      cursor: pointer;
+    }
+
+    .preview-scroll-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: var(--shadow), 0 0 40px rgba(0,212,160,0.18);
+    }
+
+    .preview-scroll-header {
+      padding: 0.7rem 0.85rem;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      background: linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 100%);
+      border-bottom: 1px solid rgba(0, 212, 160, 0.15);
+    }
+
+    .preview-scroll-media {
+      position: relative;
+      height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      cursor: pointer;
+    }
+
+    .preview-scroll-media img {
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.28);
+      transition: background 0.2s;
+      pointer-events: none;
+    }
+
+    .preview-scroll-media:hover .play-overlay { background: rgba(0,0,0,0.12); }
+
+    .play-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(0,212,160,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,212,160,0.45);
+      pointer-events: none;
+    }
+
+    .play-btn svg { width: 20px; height: 20px; fill: var(--bg); margin-left: 3px; }
+
+    .preview-scroll-footer {
+      padding: 0.55rem 0.75rem 0.65rem;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--muted);
+      background: var(--bg3);
+      border-top: 1px solid rgba(0, 212, 160, 0.1);
+    }
+
+    /* ── FEATURES ─────────────────────────────────── */
+    .features-bg {
+      background: var(--bg2);
+    }
+
+    .features-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: var(--bg3);
+      border: 1px solid rgba(0,212,160,0.1);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(0,212,160,0.35);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--white);
+    }
+
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── CTA ──────────────────────────────────────── */
+    .cta {
+      text-align: center;
+      padding: 6rem 2rem;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0,212,160,0.1) 0%, transparent 70%),
+        var(--bg);
+    }
+
+    .cta h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .cta h2 span { color: var(--teal); }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ── FOOTER ───────────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--teal-dim); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── VIDEO MODAL ──────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-inner {
+      position: relative;
+      max-width: 380px;
+      width: 90%;
+    }
+
+    .modal-inner video {
+      width: 100%;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -2.5rem;
+      right: 0;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.8rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────── */
+    @media (max-width: 600px) {
+      .screenshot-card img { height: 380px; }
+      .preview-scroll-media { height: 380px; }
+      .hero-icon { width: 90px; height: 90px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  &copy; 2026 Heisforyou &nbsp;·&nbsp;
+  <a href="mailto:travisprefersdosequis@gmail.com">Contact</a>
+  &nbsp;·&nbsp;
+  <a href="privacy.html">Privacy Policy</a>
+</header>
+
+<!-- ── HERO ──────────────────────────────────────── -->
+<div class="hero">
+  <img class="hero-icon" src="assets/images/icon.png" alt="Morning and Evening App Icon" />
+  <h1>Morning and <span>Evening</span></h1>
+  <p class="hero-sub">A daily devotional companion featuring Charles Spurgeon's beloved readings — with narrated audio, home screen widgets, and daily reminders.</p>
+  <p class="hero-author">By Charles H. Spurgeon &nbsp;·&nbsp; 730 Devotions</p>
+
+  <div class="badge-row">
+    <a id="ios-badge-link" href="https://apps.apple.com/app/id6760481136" target="_blank" rel="noopener" title="Download on the App Store">
+      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" />
+    </a>
+    <!-- Google Play badge -->
+    <a href="https://play.google.com/store/apps/details?id=com.tkirk.morning_and_evening_app" target="_blank" rel="noopener" title="Get it on Google Play">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" />
+    </a>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- ── MOCKUP GALLERY ─────────────────────────────── -->
+<section id="gallery">
+  <span class="section-label">See It In Action</span>
+  <h2 class="section-title">Everything You Need for Your Daily Devotion</h2>
+  <p class="section-desc">Browse screenshots or watch a short preview below.</p>
+
+  <!-- Toggle buttons -->
+  <div class="mockup-toggle">
+    <button class="toggle-btn active" onclick="showGallery('screenshots', this)">Screenshots</button>
+    <button class="toggle-btn" onclick="showGallery('previews', this)">App Previews</button>
+  </div>
+
+  <!-- Screenshots: 01, 04, 07, 06 — 07 sits left of 06 when wrapped -->
+  <div id="gallery-screenshots" class="gallery visible">
+    <div class="screenshot-grid">
+      <div class="screenshot-card"><img src="assets/images/screenshots/01.png" alt="Start With Scripture — morning devotion" loading="lazy" /></div>
+      <div class="screenshot-card"><img src="assets/images/screenshots/04.png" alt="Daily Grace" loading="lazy" /></div>
+      <div class="screenshot-card"><img src="assets/images/screenshots/07.png" alt="Evening Peace — daily reminders" loading="lazy" /></div>
+      <div class="screenshot-card"><img src="assets/images/screenshots/06.png" alt="Morning Strength — daily reminders" loading="lazy" /></div>
+    </div>
+  </div>
+
+  <!-- App Previews — horizontal scroll, same pattern as screenshots -->
+  <div id="gallery-previews" class="gallery">
+    <div class="scroll-track">
+      <div class="preview-scroll-card" role="button" tabindex="0" onclick="openModal('assets/previews/App_Preview_1.mov')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('assets/previews/App_Preview_1.mov');}">
+        <div class="preview-scroll-header">Listen &amp; Navigate</div>
+        <div class="preview-scroll-media">
+          <img src="assets/images/previews/preview_1.jpg" alt="Video: narration, browsing devotions, and audio that continues when the screen sleeps" loading="lazy" />
+          <div class="play-overlay" aria-hidden="true">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="preview-scroll-footer">Rich narration and simple navigation. Audio keeps playing when your display sleeps.</div>
+      </div>
+      <div class="preview-scroll-card" role="button" tabindex="0" onclick="openModal('assets/previews/App_Preview_2.mov')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('assets/previews/App_Preview_2.mov');}">
+        <div class="preview-scroll-header">Reminders &amp; Share</div>
+        <div class="preview-scroll-media">
+          <img src="assets/images/previews/preview_2.jpg" alt="Video: daily reminder notifications and sharing a devotion" loading="lazy" />
+          <div class="play-overlay" aria-hidden="true">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="preview-scroll-footer">Morning and evening alerts, plus share a reading with a tap</div>
+      </div>
+      <div class="preview-scroll-card" role="button" tabindex="0" onclick="openModal('assets/previews/App_Preview_3.mov')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('assets/previews/App_Preview_3.mov');}">
+        <div class="preview-scroll-header">Dark Mode &amp; Widget</div>
+        <div class="preview-scroll-media">
+          <img src="assets/images/previews/preview_3.jpg" alt="Video: dark mode, transitions, and adding the optional Home Screen widget" loading="lazy" />
+          <div class="play-overlay" aria-hidden="true">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="preview-scroll-footer">Dark Theme available, plus an optional Home Screen Widget that signals whether it's time for the morning or evening reading.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ── FEATURES ───────────────────────────────────── -->
+<div class="features-bg">
+  <div class="features-wrap">
+    <span class="section-label">What's Inside</span>
+    <h2 class="section-title" style="text-align:center;">Built for the Way You Actually Live</h2>
+    <p class="section-desc" style="margin:0 auto 0;">Every detail is designed to get out of the way and let Spurgeon speak.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎵</div>
+        <h3>High-Quality Narration</h3>
+        <p>All 730 devotions are narrated in a clear, natural voice chosen for comprehension and pacing — making Spurgeon's 19th-century language easier to absorb.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Background Audio</h3>
+        <p>Audio continues playing after you lock your screen or switch apps. Listen during commutes, walks, or morning routines without interruption.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Always the Right Devotion</h3>
+        <p>The app automatically opens to today's Morning or Evening reading based on the time of day. No navigation needed — just open and read.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <h3>Daily Reminders</h3>
+        <p>Set independent morning and evening notifications at times that fit your schedule. Tapping the alert opens the correct devotion instantly.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖼️</div>
+        <h3>Home Screen Widget</h3>
+        <p>Small and medium widgets display today's scripture and devotion title at a glance — automatically refreshing each morning and evening.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✈️</div>
+        <h3>Fully Offline</h3>
+        <p>Devotion text is bundled in the app. Audio is cached after first play. Once loaded, everything works with no Wi-Fi or cellular signal required.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌙</div>
+        <h3>Light &amp; Dark Mode</h3>
+        <p>The app follows your system theme automatically — no setting to change. Clean, readable typography in both light and dark environments.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">↗️</div>
+        <h3>Native Sharing</h3>
+        <p>Share any devotion with a tap. The share sheet sends a beautifully formatted message with the scripture, body text, and Spurgeon's attribution.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ────────────────────────────────────────── -->
+<div class="cta">
+  <h2>Start Your Day <span>With Purpose</span></h2>
+  <p>Free on iOS and Android. No ads, no subscriptions, no account required.</p>
+  <div class="badge-row" style="justify-content:center;">
+    <a id="ios-badge-link-2" href="https://apps.apple.com/app/id6760481136" target="_blank" rel="noopener" title="Download on the App Store">
+      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" />
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.tkirk.morning_and_evening_app" target="_blank" rel="noopener" title="Get it on Google Play">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" />
+    </a>
+  </div>
+</div>
+
+<!-- ── FOOTER (copyright line moved to site header) ─ -->
+<footer>
+  <p style="font-size:0.76rem; color: var(--muted);">
+    Morning and Evening by Charles H. Spurgeon is in the public domain.
+  </p>
+</footer>
+
+<!-- ── VIDEO MODAL ────────────────────────────────── -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeModalBtn()">&#x2715;</button>
+    <video id="modal-video" controls playsinline></video>
+  </div>
+</div>
+
+<script>
+  function showGallery(name, btn) {
+    document.querySelectorAll('.gallery').forEach(g => g.classList.remove('visible'));
+    document.getElementById('gallery-' + name).classList.add('visible');
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function openModal(src) {
+    const modal = document.getElementById('modal');
+    const video = document.getElementById('modal-video');
+    video.src = src;
+    video.play();
+    modal.classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modal')) closeModalBtn();
+  }
+
+  function closeModalBtn() {
+    const modal = document.getElementById('modal');
+    const video = document.getElementById('modal-video');
+    video.pause();
+    video.src = '';
+    modal.classList.remove('open');
+  }
+
+</script>
+
+</body>
+</html>
